@@ -3,15 +3,25 @@
 set -e
 
 PUSH=false
-for arg in "$@"; do
-  case "$arg" in
+PLATFORM=""
+while [ "$#" -gt 0 ]; do
+  case "$1" in
     --push) PUSH=true ;;
+    --platform)
+      if [ "$#" -lt 2 ] || [ -z "$2" ] || [[ "$2" == --* ]]; then
+        echo "Missing value for --platform" >&2
+        exit 1
+      fi
+      PLATFORM="$2"
+      shift
+      ;;
     *)
-      echo "Unknown argument: $arg" >&2
-      echo "Usage: $0 [--push]" >&2
+      echo "Unknown argument: $1" >&2
+      echo "Usage: $0 [--push] [--platform linux/amd64]" >&2
       exit 1
       ;;
   esac
+  shift
 done
 
 # 镜像版本
@@ -25,7 +35,11 @@ echo "Building: ${TAG}"
 echo "Dockerfile: Dockerfile"
 echo "=========================================="
 
-sudo docker build -t "${TAG}" -f Dockerfile .
+BUILD_ARGS=()
+if [ -n "$PLATFORM" ]; then
+  BUILD_ARGS+=(--platform "$PLATFORM")
+fi
+sudo docker build "${BUILD_ARGS[@]}" -t "${TAG}" -f Dockerfile .
 
 echo "Done: ${TAG}"
 echo ""
