@@ -25,7 +25,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 # 镜像版本
-VERSION="0.1.1-jdk21"
+VERSION="1.0.0-jdk21"
 IMAGE_NAME="zbjumper/builder-android"
 
 TAG="${IMAGE_NAME}:${VERSION}"
@@ -39,7 +39,7 @@ BUILD_ARGS=()
 if [ -n "$PLATFORM" ]; then
   BUILD_ARGS+=(--platform "$PLATFORM")
 fi
-sudo docker build "${BUILD_ARGS[@]}" -t "${TAG}" -f Dockerfile .
+docker build "${BUILD_ARGS[@]}" -t "${TAG}" -f Dockerfile .
 
 echo "Done: ${TAG}"
 echo ""
