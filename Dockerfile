@@ -21,7 +21,7 @@ RUN apt-get update && \
     echo "Asia/Shanghai" > /etc/timezone && \
     rm -rf /var/lib/apt/lists/*
 
-ARG GLAB_VERSION=1.124.0
+ARG GLAB_VERSION=1.126.0
 RUN wget -q \
       "https://gitlab.com/gitlab-org/cli/-/releases/v${GLAB_VERSION}/downloads/glab_${GLAB_VERSION}_linux_amd64.tar.gz" \
       -O /tmp/glab.tar.gz && \
